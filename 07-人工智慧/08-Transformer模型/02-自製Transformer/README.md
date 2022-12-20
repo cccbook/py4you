@@ -1,4 +1,7 @@
-# from -- https://github.com/fkodom/transformer-from-scratch
+# from
+
+* 程式 -- https://github.com/fkodom/transformer-from-scratch
+* 文章 -- https://medium.com/the-dl/transformers-from-scratch-in-pytorch-8777e346ca51
 
 # transformer-from-scratch
 Code for my Medium blog post: [Transformers from Scratch in PyTorch](https://medium.com/the-dl/transformers-from-scratch-in-pytorch-8777e346ca51)
