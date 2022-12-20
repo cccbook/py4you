@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Flask Web App</title>
+    </head>
+    <body>
+        <header>
+            <h1>Flask Web App</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('user.users') }}">Users</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        <footer>
+            Copyright 2021.
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,141 @@
+第二章：構建你的第一個 Flask Web 應用程序
+
+在這一章中，我們將深入探究 Flask 的核心概念，並學習如何使用它建立一個真正的 Web 應用程序。我們將學習如何配置 Flask 應用程序，定義路由和觸發函數，以及如何使用模板來渲染 HTML 頁面。
+
+首先，我們會學習 Flask 應用程序的基本結構和工作原理。我們會學習 Flask 的應用程序容器，了解它是如何協調請求的生命週期的。我們還會學習 Flask 的路由機制，並探究它是如何將請求映射到相應的請求處理函數的。
+
+為了實現這些功能，我們需要寫一些程式碼。我們可以建立一個名為 app.py 的檔案，並在該檔案中寫入以下代碼：
+
+Copy code
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'This is the home page.'
+
+@app.route('/hello')
+def hello():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run()
+這段代碼中，我們首先從 Flask 模組中導入 Flask 類別。然後我們建立一個 Flask 物件，並將 name 參數傳遞給它。接著我們使用 app.route 裝飾器定義了兩個路由，分
+
+
+
+
+ccckmit@gmail.com
+請繼續
+
+別對應到 / 和 /hello 這兩個 URL。每個路由都會觸發一個函數，並將請求處理函數返回的字串作為響應傳回給客戶端。
+
+最後，我們在程式執行時啟動應用程序。這樣，當我們運行 app.py 檔案時， Flask 就會啟動一個 Web 伺服器，並侦聽客户端的請求。我們可以通過瀏覽器訪問 http://localhost:5000/ 和 http://localhost:5000/hello 來測試應用程序是否正常工作，如果一切正常，您應該會看到頁面上顯示 “This is the home page.” 和 “Hello, World!” 的字樣。
+
+接下來，我們會學習如何拆分 Flask 應用程序，並利用 Flask 框架的擴展來實現更多的功能。 Flask 提供了一個名為 blueprint 的概念，可以幫助我們將應用程序拆分為多個模組。每個模組都可以有自己的路由和請求處理函數，並且可以被其他模組重用。
+
+例如，我們可以建立一個名為 user 的模組，並在該模組中定義一些用戶相關的功能。我們可以建立一個名為 user.py 的檔案，並在該檔案中寫入以下代
+
+
+
+
+ccckmit@gmail.com
+請繼續
+
+碼：
+
+Copy code
+from flask import Blueprint
+
+user_bp = Blueprint('user', __name__)
+
+@user_bp.route('/users')
+def list_users():
+    return 'This is the page for listing users.'
+
+@user_bp.route('/users/<int:user_id>')
+def show_user(user_id):
+    return 'This is the page for showing user {}.'.format(user_id)
+在這段代碼中，我們首先從 Flask 模組中導入 Blueprint 類別。然後我們建立了一個名為 user_bp 的 blueprint 物件，並將模組名稱和模組代碼所在的檔案名稱傳遞給它。接著我們使用 user_bp.route 裝飾器定義了兩個路由，分別對應到 /users 和 /users/<user_id> 這兩個 URL。每個路由都會觸發一個函數，並將請求處理函數返回的字串作為響應傳回給客戶端。
+
+現在，我們已經定義了 user 模組，並且在該模組中定義
+
+
+
+
+ccckmit@gmail.com
+請繼續
+
+了兩個路由。接下來，我們需要將 user 模組 “掛載” 到我們的 Flask 應用程序中。我們可以在 app.py 檔案中寫入以下代碼：
+
+Copy code
+from flask import Flask
+from user import user_bp
+
+app = Flask(__name__)
+app.register_blueprint(user_bp)
+
+@app.route('/')
+def index():
+    return 'This is the home page.'
+
+@app.route('/hello')
+def hello():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run()
+在這段代碼中，我們首先從 user 模組中導入了 user_bp 變數。然後我們在 Flask 應用程序物件上調用 register_blueprint 方法，將 user 模組掛載到 Flask 應用程序中。這樣一來，我們就可以通過瀏覽器訪問 http://localhost:5000/users 和 http://localhost:5000/users/<user_id> 這兩個 URL，看看應用程序是否能夠正常工作。
+
+最後，我們會學習如何使用 Flask 框架的模板系統渲染 HTML 頁面。 Flask 支持多種模板引擎，包括 Jinja2、Mako 和 Chameleon 等。在本章中，我們將使用 Jinja2 模板引擎。
+
+首先，我們需要建立一個名為 templates 的資料夾，用來存放我們的 HTML 模板。然後我們可以在 templates 資料夾中建立
+
+
+
+
+ccckmit@gmail.com
+請繼續
+
+一個名為 index.html 的檔案，並在該檔案中寫入以下代碼：
+
+Copy code
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Flask App</title>
+  </head>
+  <body>
+    <h1>Hello, World!</h1>
+  </body>
+</html>
+這段代碼定義了一個基本的 HTML 頁面，其中包含了一個標題標籤。接下來，我們可以在 app.py 檔案中寫入以下代碼：
+
+Copy code
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/hello')
+def hello():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run()
+在這段代碼中，我們首先從 Flask 模組中導入了 Flask 物件和 render_template 函數。然後我們在 index 請求處理函數中調用了 render_template 函數，傳遞給它 index.html 這個模板名稱。 render_template 函數會尋找 templates 資料夾中的 index.html 檔案，並將模板中的內容渲染成 HTML 頁面。最後，我們再通過瀏覽器訪問 http://localhost:5000/ 來測試應用
+
+
+
+
+ccckmit@gmail.com
+請繼續
+
+程序是否正常工作。如果一切正常，您應該會看到頁面上顯示 “Hello, World!” 的字樣。
+
+這就是本章中我們學習的所有內容。在下一章中，我們將深入探究 Flask 框架中的其他核心概念，並學習如何使用它建立更加複雜的 Web 應用程序。

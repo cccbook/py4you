@@ -1,0 +1,459 @@
+接著請寫第三章：使用資料庫進行持久性存儲，請多給些程式範例
+
+在本章中，我們將學習如何使用 Flask-SQLAlchemy 擴展來在我們的 Web 應用程序中使用資料庫。我們將學習如何定義模型，建立數據表，以及如何通過 Flask-SQLAlchemy 操作資料庫。
+
+首先，我們需要在我們的項目中安裝 Flask-SQLAlchemy 擴展。我們可以通過以下命令來安裝它：
+
+Copy code
+pip install Flask-SQLAlchemy
+安裝完成後，我們就可以從 Flask-SQLAlchemy 模組中導入 SQLAlchemy 物件，並使用它來定義模型：
+
+Copy code
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+在這段代碼中，我們首先從 Flask-SQLAlchemy 模組中導入了 SQLAlchemy 物件。然後我們建立了一個 User 模型類別，該類別繼承了 SQLAlchemy 的 db.Model 類別。在 User 模型中，我們定義了三個字段：id、username 和 email。我們使用 db.Column 方法將這些字段映射到數據表的欄位上。
+
+接下來，我們需要在 app.py 檔案中配置 Flask-SQLAlchemy 擴展。我們可以在 app.py 檔案的頂部寫入以下代碼：
+
+Copy code
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+在這段代碼中，我們首先從 Flask 和 Flask-SQLAlchemy 模組中導入了 Flask 和 SQLAlchemy 類別。接下來，我們建立了一個 Flask 應
+
+
+
+
+ccckmit@gmail.com
+請繼續
+
+用程序物件，並將 SQLALCHEMY_DATABASE_URI 和 SQLALCHEMY_TRACK_MODIFICATIONS 這兩個設定賦值給 Flask 應用程序的 config 屬性。這兩個設定分別指定了資料庫的位置和是否追蹤對資料庫的修改。
+
+最後，我們再使用 SQLAlchemy 物件來建立一個 db 物件，並將 Flask 應用程序傳遞給它。這樣一來，我們就可以在應用程序中使用 Flask-SQLAlchemy 擴展了。
+
+現在，我們需要建立 User 模型對應的數據表。我們可以在 Python 交互式環境中執行以下代碼來建立數據表：
+
+Copy code
+from app import db
+from app.models import User
+
+db.create_all()
+在這段代碼中，我們首先導入了 db 物件和 User 模型類別。然後我們調用 db 物件的 create_all 方法來建立 User 模型對應的數據表。
+
+接下來，我們就可以使用 Flask-SQLAlchemy 操作資料庫了。我們可以在 Python 交互式環境中執行以下代碼來測試操作資料庫的功能：
+
+Copy code
+from app import db
+from app.models import User
+
+# 新增記錄
+user1 = User(username='alice', email='alice@example.com')
+db.session.add(user1)
+db.session.commit()
+
+# 查詢記錄
+users = User.query.all()
+print(users)
+
+# 更新記錄
+user1.username = 'bob'
+db.session.commit()
+
+# 刪除
+
+
+
+ccckmit@gmail.com
+請繼續
+
+記錄
+db.session.delete(user1)
+db.session.commit()
+
+Copy code
+
+在這段代碼中，我們首先導入了 db 物件和 User 模型類別。然後我們新增了一個 User 記錄，並調用 db.session.add 和 db.session.commit 方法將記錄添加到數據表中。接下來，我們調用 User.query.all 方法查詢所有記錄，並將結果輸出到控制檯。然後，我們再修改記錄的 username 字段，並調用 db.session.commit 方法將修改提交到資料庫。最後，我們再調用 db.session.delete 方法將記錄從數據表中刪除。
+
+這就是本章中我們學習的所有內容。在下一章中，我們將探究 Flask 框架中的其他高級概念，並學習如何使用它建立更加複雜和強大的 Web 應用程序。
+
+
+
+ccckmit@gmail.com
+請把上面的那個 app 程式完整的列出來
+
+Copy code
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run()
+
+
+
+ccckmit@gmail.com
+剛剛的程式沒有 user 的 route 功能，請加上去，再給一次完整的程式碼
+
+Copy code
+from flask import Flask, render_template, request
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+@app.route('/users')
+def users():
+    users = User.query.all()
+    return render_template('users.html', users=users)
+
+if __name__ == '__main__':
+    app.run()
+
+
+
+ccckmit@gmail.com
+請把剛剛這個程式中的user模組程式碼列出來
+
+from flask import Flask
+from user import user_bp
+
+app = Flask(__name__)
+app.register_blueprint(user_bp)
+
+@app.route('/')
+def index():
+    return 'This is the home page.'
+
+@app.route('/hello')
+def hello():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run()
+
+您想要看 user 模組程式碼嗎？
+
+如果是，以下是 user 模組程式碼的範例：
+
+Copy code
+from flask import Blueprint, render_template, request
+
+user_bp = Blueprint('user', __name__)
+
+@user_bp.route('/users')
+def users():
+    users = User.query.all()
+    return render_template('users.html', users=users)
+
+@user_bp.route('/users/create', methods=['POST'])
+def create_user():
+    username = request.form.get('username')
+    email = request.form.get('email')
+
+    user = User(username=username, email=email)
+    db.session.add(user)
+    db.session.commit()
+
+    return 'User created successfully.'
+
+@user_bp.route('/users/<int:user_id>')
+def show_user(user_id):
+    user = User.query.get_or_404(user_id)
+    return render_template('user.html', user=user)
+
+@user_bp.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])
+def edit_user(user_id):
+    user = User.query.get_or_404(user_id)
+
+    if request.method == 'POST':
+        user.username = request.form.get('username')
+        user.email = request.form.get('email')
+        db.session.commit()
+
+        return 'User updated successfully.'
+    else:
+        return render_template('edit_user.html', user=user)
+
+@user_bp.route('/users/<int:user_id>/delete', methods=['POST'])
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+
+    return 'User deleted successfully.'
+
+
+
+ccckmit@gmail.com
+請把剛剛程式中render_template('users.html', users=users)　中的users.html 內容列出來
+
+如果您的 user.html 文件位於 templates 目錄下，您可以使用以下程式碼來渲染模板：
+
+Copy code
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Users</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+這段程式碼中，我們首先使用了 Jinja2 的 extends 指令來指定基礎模板。然後，我們使用了 block 指令來定義內容區塊。在內容區塊中，我們使用了 for 迴圈來遍歷 users 列表，並將每個 user 物件的 username 和 email 字段渲染到 HTML 頁面中。
+
+
+
+
+ccckmit@gmail.com
+請列出 base.html 的內容
+
+如果您的 base.html 文件位於 templates 目錄下，您可以使用以下程式碼來渲染模板：
+
+Copy code
+<!doctype html>
+<html>
+    <head>
+        <title>Flask Web App</title>
+    </head>
+    <body>
+        <header>
+            <h1>Flask Web App</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('user.users') }}">Users</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        <footer>
+            Copyright 2021.
+        </footer>
+    </body>
+</html>
+這段程式碼中，我們首先定義了 HTML 頁面的基本結構，包括頭部、導航欄、內容區塊和頁腳。然後，我們使用了 Jinja2 模板語言中的 block 指令來定義內容區塊。在內容區塊中，我們將在子模板中渲染具體內容。此外，我們還使用了 url_for 函數來為導航欄的連結提供正確的 URL。
+
+
+
+
+ccckmit@gmail.com
+請列出 render_template('edit_user.html', user=user) 中的 edit_user.html 之內容
+
+如果您的 edit_user.html 文件位於 templates 目錄下，您可以使用以下程式碼來渲染模板：
+
+Copy code
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Edit User</h1>
+
+    <form action="{{ url_for('user.edit_user', user_id=user.id) }}" method="POST">
+        <label>Username:</label>
+        <input type="text" name="username" value="{{ user.username }}"><br>
+        <label>Email:</label>
+        <input type="email" name="email" value="{{ user.email }}"><br>
+        <input type="submit" value="Update">
+    </form>
+{% endblock %}
+這段程式碼中，我們首先使用了 Jinja2 的 extends 指令來指定基礎模板。然後，我們使用了 block 指令來定義內容區塊。在內容區塊中，我們定義了一個表單，使用了 url_for 函數來為表單提供正確的提交地址，並使用了 user 物件的 username 和 email 字段來初始化表單中的輸入框。
+
+
+
+
+ccckmit@gmail.com
+請列出 class User 的內容
+
+範例：
+
+Copy code
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+這段程式碼中，我們定義了一個名為 User 的類，它繼承了 Flask-SQLAlchemy 模塊中的 db.Model 類。我們定義了兩個字段：id 和 username。id 字段是整數型且是資料表的主鍵，username 字段是字符串型且是唯一且不能為空。
+
+
+
+
+ccckmit@gmail.com
+請問上面程式中的 db 定義在哪呢?
+
+在上面程式中，db 可能是 Flask-SQLAlchemy 模塊中的 SQLAlchemy 方法的別名，在程序初始化時定義。
+
+例如：
+
+Copy code
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+在這段程式中，我們首先引入了 Flask-SQLAlchemy 模塊，然後將 SQLAlchemy 方法賦值給 db 別名。之後，我們可以通過 db 別名來訪問 SQLAlchemy 方法。
+
+
+
+
+ccckmit@gmail.com
+怎麼安裝 flask_sqlalchemy
+
+如果您想要安裝 Flask-SQLAlchemy 模塊，您可以使用以下命令：
+
+Copy code
+pip install Flask-SQLAlchemy
+請注意，您需要確保您的系統中已安裝了 pip 和 Python。如果您遇到任何問題，請參閱 Flask-SQLAlchemy 的文檔。
+
+
+
+
+ccckmit@gmail.com
+如何創建上面程式中的 user 資料庫 (sqlite)
+
+如果您想要創建一個名為 user 的 SQLite 資料庫，您可以使用以下程序：
+
+Copy code
+import sqlite3
+
+connection = sqlite3.connect('user.db')
+cursor = connection.cursor()
+
+# 在 user 資料庫中創建 users 表
+query = '''
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE NOT NULL
+);
+'''
+cursor.execute(query)
+
+# 提交變更
+connection.commit()
+
+# 關閉連接
+connection.close()
+在這段程序中，我們首先使用 sqlite3 模塊來連接 user.db 資料庫。然後，我們使用 cursor 方法創建了一個游標對象，用於在資料庫中執行 SQL 查詢。
+
+接下來，我們使用 CREATE TABLE 語句來創建 users 表。我
+
+
+
+
+ccckmit@gmail.com
+請繼續
+
+接下來，我們可以使用 INSERT INTO 語句來向 users 表中插入新記錄，如下所示：
+
+Copy code
+# 向 users 表中插入新記錄
+query = '''
+INSERT INTO users (username, email) VALUES ("John", "john@example.com");
+'''
+cursor.execute(query)
+我們也可以使用 UPDATE 語句來修改 users 表中的記錄，如下所示：
+
+Copy code
+# 更新 username 為 John 的記錄
+query = '''
+UPDATE users SET username="Johnny" WHERE username="John";
+'''
+cursor.execute(query)
+最後，我們可以使用 DELETE 語句來刪除 users 表中的記錄，如下所示：
+
+Copy code
+# 刪除 email 為 john@example.com 的記錄
+query = '''
+DELETE FROM users WHERE email="john@example.com";
+'''
+cursor.execute(query)
+每當我們在資料庫中執行了任何變
+
+
+
+
+ccckmit@gmail.com
+請繼續
+
+每當我們在資料庫中執行了任何變更操作時，都需要記得調用 commit 方法來保存變更。
+
+例如：
+
+Copy code
+# 提交變更
+connection.commit()
+在完成所有操作之後，請記得關閉數據庫連接，如下所示：
+
+Copy code
+# 關閉連接
+connection.close()
+這樣，您就可以使用 SQLite 資料庫來存儲您的數據了。您可以使用 SQL 語句來查詢、修改和刪除數據，並使用 commit 方法來保存變更。
+
+
+
+
+ccckmit@gmail.com
+db = SQLAlchemy() 這句程式，如何指定開啟的 sqlite 資料庫檔案呢？
+
+如果您想要指定 SQLite 資料庫檔案，您可以在調用 SQLAlchemy 方法時傳入路徑參數，如下所示：
+
+Copy code
+db = SQLAlchemy(app, 'sqlite:///user.db')
+在這段程式中，我們傳入了兩個參數：app 和 'sqlite:///user.db'。app 參數是 Flask 應用程序對象，'sqlite:///user.db' 參數指定了 SQLite 資料庫檔案的路徑。
+
+另外，您還可以指定 SQLite 資料庫的鏈接字串，如下所示：
+
+Copy code
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
+db = SQLAlchemy(app)
+在這段程式中，我們首先在 Flask 應用程序的配置字典中設置了 SQLALCHEMY_DATABASE_URI 鍵，指定了 SQLite 資料庫檔案的路徑。然後，我們調用了 SQLAlchemy 方法，並傳入了 Flask 應用程序對象。
+
+這兩種方法都可以用來指定 SQLite 資料庫檔案的路徑。

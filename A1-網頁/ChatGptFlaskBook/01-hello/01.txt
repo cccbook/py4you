@@ -1,0 +1,35 @@
+第一章：介紹 Flask 和 Web 應用程序
+
+在這一章中，我們將介紹 Flask 框架和 Web 應用程序的概念。我們會討論 Flask 是什麼，它是一個用於建立 Web 應用程序的 Python 框架。我們會探討 Flask 的主要特點，包括它的輕量級、模塊化和擴展性。
+
+我們還會學習如何安裝 Flask 並建立一個簡單的 “Hello, World!” 程序。首先，我們需要安裝 Flask 框架，通過使用 pip 工具安裝 Flask 模組：
+
+Copy code
+$ pip install Flask
+接下來，我們建立一個名為 app.py 的檔案，並在該檔案中寫入以下代碼：
+
+Copy code
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run()
+這段代碼中，我們首先從 Flask 模組中導入 Flask 類別。然後我們建立一個 Flask 物件，並將 name 參數傳遞給它。接著我們使用 app.route 裝飾器來定義路由，該路由將 URL 路徑 / 映射到 hello 函數。最後，我們在程序執行時啟動應用
+
+
+
+
+ccckmit@gmail.com
+請接著《最後，我們在程序執行時啟動應用》這句話寫下來
+
+最後，我們在程序執行時啟動應用程序。這樣，當我們運行 app.py 檔案時， Flask 就會啟動一個 Web 伺服器，並侦聽客户端的請求。我們可以通過瀏覽器訪問 http://localhost:5000/ 來測試應用程序是否正常工作，如果一切正常，您應該會看到頁面上顯示 “Hello, World!” 的字樣。
+
+Copy code
+if __name__ == '__main__':
+    app.run()
+這就是我們的第一個 Flask 應用程序，雖然它非常簡單，但已經可以滿足我們的需求。在接下來的章節中，我們會逐步深入學習 Flask 框架的更高級特性，並學習如何建立更複雜、功能更強大的 Web 應用程序。
